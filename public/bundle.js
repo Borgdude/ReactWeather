@@ -25604,10 +25604,9 @@
 
 	var React = __webpack_require__(1);
 
-	var WeatherMessage = function WeatherMessage(props) {
-	  var temp = props.temp,
-	      location = props.location;
-
+	var WeatherMessage = function WeatherMessage(_ref) {
+	  var temp = _ref.temp,
+	      location = _ref.location;
 
 	  return React.createElement(
 	    'h3',
@@ -25638,7 +25637,6 @@
 	    var requestURL = OPEN_WEATHER_MAP_URL + '&q=' + encodedLocation;
 
 	    return axios.get(requestURL).then(function (res) {
-	      debugger;
 	      if (res.data.cod && res.data.message) {
 	        console.log(res.data + ": first error");
 	        throw new Error(res.data.message);
@@ -27168,9 +27166,18 @@
 
 	var Examples = function Examples(props) {
 	  return React.createElement(
-	    'h3',
+	    'div',
 	    null,
-	    'Examples Component'
+	    React.createElement(
+	      'h3',
+	      null,
+	      'Examples'
+	    ),
+	    React.createElement(
+	      'p',
+	      null,
+	      'Welcome to Examples page.'
+	    )
 	  );
 	};
 
