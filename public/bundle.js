@@ -25525,7 +25525,14 @@
 
 	  onSearch: function onSearch(e) {
 	    e.preventDefault();
-	    alert('Not yet wired up');
+
+	    var location = this.refs.locationSearch.value;
+	    var encodedLocation = encodeURIComponent(location);
+
+	    if (location.length > 0) {
+	      this.refs.locationSearch.value = '';
+	      window.location.hash = "#/?location=" + encodedLocation;
+	    }
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -25583,7 +25590,7 @@
 	            React.createElement(
 	              'li',
 	              null,
-	              React.createElement('input', { type: 'search', placeholder: 'Search for city by name' })
+	              React.createElement('input', { type: 'search', ref: 'locationSearch', placeholder: 'Search for city by name' })
 	            ),
 	            React.createElement(
 	              'li',
@@ -25617,15 +25624,32 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      isLoading: false
-
 	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var location = this.props.location.query.location;
+
+	    if (location && location.length > 0) {
+	      this.handleSearch(location);
+	      window.location.hash = '#/';
+	    }
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+	    var location = newProps.location.query.location;
+
+	    if (location && location.length > 0) {
+	      this.handleSearch(location);
+	      window.location.hash = '#/';
+	    }
 	  },
 	  handleSearch: function handleSearch(location) {
 	    var that = this;
 
 	    this.setState({
 	      isLoading: true,
-	      errorMessage: undefined
+	      errorMessage: undefined,
+	      location: undefined,
+	      temp: undefined
 	    });
 
 	    openWeatherMap.getTemp(location).then(function (temp) {
@@ -27415,7 +27439,7 @@
 	        null,
 	        React.createElement(
 	          Link,
-	          { className: '/?location=Bryan' },
+	          { to: '/?location=Bryan' },
 	          'Bryan, TX'
 	        )
 	      ),
@@ -27424,7 +27448,7 @@
 	        null,
 	        React.createElement(
 	          Link,
-	          { className: '/?location=Rio' },
+	          { to: '/?location=Rio' },
 	          'Rio, Brazil'
 	        )
 	      )
